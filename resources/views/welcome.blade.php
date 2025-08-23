@@ -27,6 +27,8 @@
                     <x-application-logo class="w-10 h-10 fill-current text-gray-500" />
                 </a>
             <div class="space-x-4">
+   <!-- Tombol Login & Register hanya untuk guest -->
+@guest
     <!-- Tombol Login -->
     <a href="{{ route('login') }}" 
        class="px-4 py-2 border border-[#706f6c] text-[#706f6c] rounded-lg shadow 
@@ -40,6 +42,17 @@
               hover:bg-[#d42a02] transition">
         Register
     </a>
+@endguest
+
+<!-- Tombol Dashboard hanya untuk user yang sudah login -->
+@auth
+    <a href="{{ route('dashboard') }}" 
+       class="px-4 py-2 bg-[#f53003] text-white rounded-lg shadow 
+              hover:bg-[#d42a02] transition">
+        Dashboard
+    </a>
+@endauth
+
 </div>
 
         </div>
