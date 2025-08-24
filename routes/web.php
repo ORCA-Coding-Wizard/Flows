@@ -11,6 +11,24 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+    Route::get('/admin/index', function () {
+        return view('admin.index');
+    })->name('admin.index');
+    Route::get('/admin/bunga', function () {
+        return view('admin.bunga');
+    })->name('admin.bunga');
+    Route::get('/admin/kategori', function () {
+        return view('admin.kategori');
+    })->name('admin.kategori');
+    Route::get('/admin/laporan', function () {
+        return view('admin.laporan');
+    })->name('admin.laporan');
+    Route::get('/admin/buket', function () {
+        return view('admin.buket');
+    })->name('admin.buket');
+    Route::get('/admin/laporan', function () {
+        return view('admin.laporan');
+    })->name('admin.laporan');
 
 });
 
