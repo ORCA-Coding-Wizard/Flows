@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BuketController;
+use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\BungaController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -7,36 +12,28 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'role:Admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->group(function () {
+    Route::get('/dashboard', function () {
         return view('admin.dashboard');
-    })->name('admin.dashboard');
-    Route::get('/admin/index', function () {
-        return view('admin.index');
-    })->name('admin.index');
-    Route::get('/admin/bunga', function () {
-        return view('admin.bunga');
-    })->name('admin.bunga');
-    Route::get('/admin/kategori', function () {
-        return view('admin.kategori');
-    })->name('admin.kategori');
-    Route::get('/admin/laporan', function () {
-        return view('admin.laporan');
-    })->name('admin.laporan');
-    Route::get('/admin/buket', function () {
-        return view('admin.buket');
-    })->name('admin.buket');
-    Route::get('/admin/laporan', function () {
-        return view('admin.laporan');
-    })->name('admin.laporan');
+    })->name('dashboard');
 
+    Route::resource('kelola-admin', AdminController::class)
+        ->parameters(['kelola-admin' => 'admin']);
+
+    Route::resource('bunga', BungaController::class);
+
+    Route::resource('kategori', KategoriController::class)
+        ->parameters(['kategori' => 'category']);
+
+    Route::resource('buket', BuketController::class);
+
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 });
 
 Route::middleware(['auth', 'role:Customer'])->group(function () {
     Route::get('/user/dashboard', function () {
         return view('user.dashboard');
     })->name('user.dashboard');
-
 });
 
 
@@ -56,4 +53,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('bouquet_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('users_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('bouquet_package_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('flower_id')->nullable()->constrained()->cascadeOnDelete();
             $table->integer('quantity')->default(1);
             $table->integer('total_price');
-            $table->enum('status', ['pending', 'paid', 'delivered', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

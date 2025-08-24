@@ -12,7 +12,7 @@
                 {{ __('Dashboard') }}
             </x-nav-link>
 
-            <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
+            <x-nav-link :href="route('admin.kelola-admin.index')" :active="request()->routeIs('admin.index')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block mr-2" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -21,7 +21,7 @@
                 {{ __('Kelola Admin') }}
             </x-nav-link>
 
-            <x-nav-link :href="route('admin.kategori')" :active="request()->routeIs('admin.kategori')">
+            <x-nav-link :href="route('admin.kategori.index')" :active="request()->routeIs('admin.kategori')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block mr-2" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
@@ -29,7 +29,7 @@
                 {{ __('Kelola Kategori') }}
             </x-nav-link>
 
-            <x-nav-link :href="route('admin.bunga')" :active="request()->routeIs('admin.bunga')">
+            <x-nav-link :href="route('admin.bunga.index')" :active="request()->routeIs('admin.bunga')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block mr-2" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2" />
@@ -37,7 +37,7 @@
                 {{ __('Kelola Bunga') }}
             </x-nav-link>
 
-            <x-nav-link :href="route('admin.buket')" :active="request()->routeIs('admin.buket')">
+            <x-nav-link :href="route('admin.buket.index')" :active="request()->routeIs('admin.buket')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block mr-2" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />

@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bouquets', function (Blueprint $table) {
+        Schema::create('bouquet_packages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('bouquet_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('name')->nullable();
             $table->integer('price')->default(0);
-            $table->integer('capacity')->default(0);
-            $table->string('image');
+            $table->string('signature')->nullable();
             $table->timestamps();
+
+            $table->unique(['user_id', 'signature']);
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bouquets');
+        Schema::dropIfExists('bouquet_packages');
     }
 };
