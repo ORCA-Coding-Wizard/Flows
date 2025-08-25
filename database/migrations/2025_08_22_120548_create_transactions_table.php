@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('users_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('bouquet_package_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('flower_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->integer('quantity')->default(1);
-            $table->integer('total_price');
+            $table->integer('total_price')->default(0); // total keseluruhan transaksi
+            $table->text('keterangan')->nullable();      // catatan transaksi
+            $table->string('status')->default('pending'); // pending/shipped/completed
             $table->timestamps();
         });
     }

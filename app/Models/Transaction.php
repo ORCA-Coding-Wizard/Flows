@@ -11,10 +11,9 @@ class Transaction extends Model
 
     protected $fillable = [
         'users_id',
-        'bouquet_package_id',
-        'flower_id',
-        'quantity',
         'total_price',
+        'keterangan',
+        'status'
     ];
 
     /**
@@ -26,19 +25,11 @@ class Transaction extends Model
     }
 
     /**
-     * Relasi ke bouquet package
+     * Relasi ke detail transaksi
      */
-    public function bouquetPackage()
+    public function details()
     {
-        return $this->belongsTo(BouquetPackage::class, 'bouquet_package_id');
-    }
-
-
-    /**
-     * Relasi ke flower (bunga satuan)
-     */
-    public function flower()
-    {
-        return $this->belongsTo(Flower::class, 'flower_id');
+        return $this->hasMany(TransactionDetail::class, 'transaction_id');
     }
 }
+
