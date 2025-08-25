@@ -34,6 +34,18 @@ Route::middleware(['auth', 'role:Customer'])->group(function () {
     Route::get('/user/dashboard', function () {
         return view('user.dashboard');
     })->name('user.dashboard');
+     Route::get('/user/bunga', function () {
+        return view('user.bunga');
+    })->name('user.bunga');
+     Route::get('/user/buket', function () {
+        return view('user.buket');
+    })->name('user.buket');
+     Route::get('/user/buketmu', function () {
+        return view('user.buketmu');
+    })->name('user.buketmu');
+     Route::get('/user/transaksi', function () {
+        return view('user.transaksi');
+    })->name('user.transaksi');
 });
 
 
