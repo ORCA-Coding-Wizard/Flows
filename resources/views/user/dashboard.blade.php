@@ -4,12 +4,6 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             {{-- kiri: menu + search --}}
             <div class="flex items-center gap-4 text-gray-800">
-                {{-- menu (grid/list) --}}
-                <button class="p-2 hover:text-gray-600" aria-label="Menu">
-                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M4 6h16M4 12h10M4 18h16" stroke-linecap="round"/>
-                    </svg>
-                </button>
                 {{-- search --}}
                 <button class="p-2 hover:text-gray-600" aria-label="Cari">
                     <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -34,12 +28,6 @@
 
             {{-- kanan: wishlist + cart --}}
             <div class="flex items-center gap-4 text-gray-800">
-                {{-- heart --}}
-                <button class="p-2 hover:text-gray-600" aria-label="Wishlist">
-                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M12 21s-7-4.7-9.5-7.6A5.8 5.8 0 0 1 12 5a5.8 5.8 0 0 1 9.5 8.4C19 16.3 12 21 12 21Z" stroke-linejoin="round"/>
-                    </svg>
-                </button>
                 {{-- cart --}}
                 <button class="p-2 hover:text-gray-600" aria-label="Keranjang">
                     <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">

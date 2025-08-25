@@ -33,17 +33,6 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('user.favorit')" :active="request()->routeIs('user.')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1 inline" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path
-                                d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8m16 0H4m16 0-2.5-7.5a2 2 0 0 0-1.9-1.5H8.4a2 2 0 0 0-1.9 1.5L4 12" />
-                        </svg>
-                        {{ __('favorit') }}
-                    </x-nav-link>
-                </div>
-
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('user.buketmu')" :active="request()->routeIs('user.buketmu')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1 inline" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
