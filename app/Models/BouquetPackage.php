@@ -13,6 +13,7 @@ class BouquetPackage extends Model
         'bouquet_id',
         'user_id',
         'name',
+        'price',      // <-- tambahkan ini
         'signature',
     ];
 
@@ -23,15 +24,11 @@ class BouquetPackage extends Model
 
     public function flowers()
     {
-        return $this->belongsToMany(Flower::class, 'bouquet_flower')
-                    ->withTimestamps();
-    }
-
-    public function getTotalPriceAttribute()
-    {
-        $avgFlowerPrice = $this->flowers()->avg('price') ?? 0;
-        $capacity = $this->bouquet->capacity ?? 0;
-
-        return $avgFlowerPrice * $capacity;
+        return $this->belongsToMany(
+            Flower::class,
+            'bouquet_flower',        // nama pivot table
+            'bouquet_package_id',    // kolom pivot yang mengacu ke BouquetPackage
+            'flower_id'              // kolom pivot yang mengacu ke Flower
+        )->withTimestamps();
     }
 }

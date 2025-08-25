@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bouquet_flower', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bouquet_packages_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('bouquet_package_id')->constrained()->cascadeOnDelete();
             $table->foreignId('flower_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
