@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\BungaController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\FlowerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,25 +31,24 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
     Route::patch('/transactions/{transaction}/status', [LaporanController::class, 'updateStatus'])->name('transactions.updateStatus');
-
 });
 
-Route::middleware(['auth', 'role:Customer'])->group(function () {
-    Route::get('/user/dashboard', function () {
-        return view('user.dashboard');
-    })->name('user.dashboard');
-     Route::get('/user/bunga', function () {
-        return view('user.bunga');
-    })->name('user.bunga');
-     Route::get('/user/favorit', function () {
+Route::prefix('user')->name('user.')->middleware(['auth', 'role:Customer'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/flowers', [FlowerController::class, 'index'])->name('flowers.index');
+    Route::post('/flowers/{flower}/add', [FlowerController::class, 'addToCart'])->name('flowers.addToCart');
+
+
+    Route::get('/favorit', function () {
         return view('user.favorit');
-    })->name('user.favorit');
-     Route::get('/user/buketmu', function () {
+    })->name('favorit');
+    Route::get('/buketmu', function () {
         return view('user.buketmu');
-    })->name('user.buketmu');
-     Route::get('/user/transaksi', function () {
+    })->name('buketmu');
+    Route::get('/transaksi', function () {
         return view('user.transaksi');
-    })->name('user.transaksi');
+    })->name('transaksi');
 });
 
 

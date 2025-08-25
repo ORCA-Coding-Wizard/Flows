@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('transaction_details', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('transaction_id')->constrained()->cascadeOnDelete();
-    $table->foreignId('bouquet_package_id')->nullable()->constrained()->cascadeOnDelete();
-    $table->foreignId('flower_id')->nullable()->constrained()->cascadeOnDelete();
-    $table->integer('quantity')->default(1);
-    $table->integer('price'); // harga per item
-    $table->timestamps();
-});
-
+        Schema::create('transaction_details', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('transaction_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('bouquet_package_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('flower_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->integer('quantity')->default(1);
+            $table->integer('price'); // harga per item
+            $table->timestamps();
+        });
     }
 
     /**

@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('transactions', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('users_id')->constrained()->cascadeOnDelete();
-    $table->integer('total_price')->default(0); // total keseluruhan transaksi
-    $table->text('keterangan')->nullable();      // catatan transaksi
-    $table->string('status')->default('pending'); // pending/shipped/completed
-    $table->timestamps();
-});
-
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('users_id')->constrained()->cascadeOnDelete();
+            $table->integer('total_price')->default(0); // total keseluruhan transaksi
+            $table->text('keterangan')->nullable();      // catatan transaksi
+            $table->string('status')->default('pending'); // pending/shipped/completed
+            $table->timestamps();
+        });
     }
 
     /**
