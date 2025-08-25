@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class buketController extends Controller
+class favoritController extends Controller
 {
     public function index()
     {
-        return view('user.buket');
+        return view('user.favorit');
     }
 }
