@@ -10,7 +10,7 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Transaction::with(['user', 'bouquetPackage', 'flower']);
+        $query = Transaction::with(['user','details.bouquetPackage','details.flower']);
 
         // Filter tanggal
         if ($request->filled('start_date')) {
@@ -24,4 +24,16 @@ class LaporanController extends Controller
 
         return view('admin.laporan', compact('transactions'));
     }
+
+    public function updateStatus(Request $request, Transaction $transaction)
+    {
+        $request->validate([
+            'status' => 'required|in:shipped,completed',
+        ]);
+
+        $transaction->update(['status' => $request->status]);
+
+        return back()->with('success', 'Status transaksi berhasil diperbarui.');
+    }
 }
+

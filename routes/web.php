@@ -28,6 +28,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
     Route::resource('buket', BuketController::class);
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+    Route::patch('/transactions/{transaction}/status', [LaporanController::class, 'updateStatus'])->name('transactions.updateStatus');
+
 });
 
 Route::middleware(['auth', 'role:Customer'])->group(function () {
