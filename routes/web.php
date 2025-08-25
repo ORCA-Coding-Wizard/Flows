@@ -37,9 +37,9 @@ Route::middleware(['auth', 'role:Customer'])->group(function () {
      Route::get('/user/bunga', function () {
         return view('user.bunga');
     })->name('user.bunga');
-     Route::get('/user/buket', function () {
-        return view('user.buket');
-    })->name('user.buket');
+     Route::get('/user/favorit', function () {
+        return view('user.favorit');
+    })->name('user.favorit');
      Route::get('/user/buketmu', function () {
         return view('user.buketmu');
     })->name('user.buketmu');
