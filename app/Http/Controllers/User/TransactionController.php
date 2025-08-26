@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
+    public function index()
+    {
+        $user = auth()->user();
+        $transactions = Transaction::where('users_id', $user->id)->latest()->get();
+        return view('user.transaksi', compact('transactions'));
+    }   
 
     public function cancel(Transaction $transaction)
     {

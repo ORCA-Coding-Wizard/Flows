@@ -39,19 +39,6 @@
         </header>
 
 
-<<<<<<< HEAD
-    {{-- HERO BANNER SLIDER --}}
-    <section class="w-full h-80 relative overflow-hidden">
-        <div x-data="carousel()" x-init="init()" class="h-full relative">
-            {{-- Slides Container --}}
-            <div class="flex h-full transition-transform duration-700"
-                :style="`transform: translateX(-${current * 100}%);`">
-                <template x-for="(slide, index) in slides" :key="index">
-                    <div class="w-full flex-shrink-0 h-full relative">
-                        <img :src="slide.image" :alt="slide.title" class="w-full h-full object-cover">
-                    </div>
-                </template>
-=======
         {{-- HERO BANNER SLIDER --}}
         <section class="w-full h-80 relative overflow-hidden">
             <div x-data="carousel()" x-init="init()" class="h-full relative">
@@ -73,34 +60,9 @@
                     class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white">&larr;</button>
                 <button @click="next()"
                     class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white">&rarr;</button>
->>>>>>> 58ccb8ce841e99c68921fad7935519768a8f7345
             </div>
         </section>
 
-<<<<<<< HEAD
-            {{-- Controls --}}
-            <button @click="prev()"
-                class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white">&larr;</button>
-            <button @click="next()"
-                class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white">&rarr;</button>
-        </div>
-    </section>
-
-    {{-- CATEGORY NAV (FLOWERS | PLANTS | GIFTS) --}}
-    <section class="py-12 bg-white">
-        <div class="max-w-5xl mx-auto grid grid-cols-3 gap-8 text-center">
-            <a href="#category-1" class="group flex flex-col items-center gap-2">
-                {{-- flower icon --}}
-                <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M12 13c-2 0-3.5-1.6-3.5-3.5S10 6 12 6s3.5 1.6 3.5 3.5S14 13 12 13Z" />
-                    <path d="M12 13c0 4-3 5-3 7h6c0-2-3-3-3-7Z" />
-                    <path d="M7 9c0-2-1.5-3-3-3 0 2 1.5 3 3 3Zm10 0c0-2 1.5-3 3-3 0 2-1.5 3-3 3Z" />
-                </svg>
-                <span class="font-bold tracking-wide">FLOWERS</span>
-                <span class="group-hover:translate-x-1 transition">
-                    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
-=======
         {{-- CATEGORY NAV (FLOWERS | PLANTS | GIFTS) --}}
         <section class="py-12 bg-white">
             <div class="max-w-5xl mx-auto grid grid-cols-3 gap-8 text-center">
@@ -110,7 +72,6 @@
                         <path d="M12 13c-2 0-3.5-1.6-3.5-3.5S10 6 12 6s3.5 1.6 3.5 3.5S14 13 12 13Z" />
                         <path d="M12 13c0 4-3 5-3 7h6c0-2-3-3-3-7Z" />
                         <path d="M7 9c0-2-1.5-3-3-3 0 2 1.5 3 3 3Zm10 0c0-2 1.5-3 3-3 0 2-1.5 3-3 3Z" />
->>>>>>> 58ccb8ce841e99c68921fad7935519768a8f7345
                     </svg>
                     <span class="font-bold tracking-wide">FLOWERS</span>
                     <span class="group-hover:translate-x-1 transition">
@@ -120,24 +81,11 @@
                     </span>
                 </a>
 
-<<<<<<< HEAD
-            <a href="#category-2" class="group flex flex-col items-center gap-2">
-                {{-- leaf icon --}}
-                <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M20 4c-8 0-12 5-12 11a5 5 0 0 0 10 0c0-2 .5-6 2-11Z" />
-                    <path d="M8 15c2-1 5-2 8-2" stroke-linecap="round" />
-                </svg>
-                <span class="font-bold tracking-wide">PLANTS</span>
-                <span class="group-hover:translate-x-1 transition">
-                    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
-=======
                 <a href="#" class="group flex flex-col items-center gap-2">
                     {{-- leaf icon --}}
                     <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M20 4c-8 0-12 5-12 11a5 5 0 0 0 10 0c0-2 .5-6 2-11Z" />
                         <path d="M8 15c2-1 5-2 8-2" stroke-linecap="round" />
->>>>>>> 58ccb8ce841e99c68921fad7935519768a8f7345
                     </svg>
                     <span class="font-bold tracking-wide">PLANTS</span>
                     <span class="group-hover:translate-x-1 transition">
@@ -147,25 +95,12 @@
                     </span>
                 </a>
 
-<<<<<<< HEAD
-            <a href="#category-3" class="group flex flex-col items-center gap-2">
-                {{-- gift icon --}}
-                <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M3 9h18v11H3z" />
-                    <path d="M12 9v11M3 9h18M7 9V7a2 2 0 1 1 4 0v2M13 9V7a2 2 0 1 1 4 0v2" stroke-linecap="round" />
-                </svg>
-                <span class="font-bold tracking-wide">GIFTS</span>
-                <span class="group-hover:translate-x-1 transition">
-                    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
-=======
                 <a href="#" class="group flex flex-col items-center gap-2">
                     {{-- gift icon --}}
                     <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M3 9h18v11H3z" />
                         <path d="M12 9v11M3 9h18M7 9V7a2 2 0 1 1 4 0v2M13 9V7a2 2 0 1 1 4 0v2"
                             stroke-linecap="round" />
->>>>>>> 58ccb8ce841e99c68921fad7935519768a8f7345
                     </svg>
                     <span class="font-bold tracking-wide">GIFTS</span>
                     <span class="group-hover:translate-x-1 transition">
@@ -178,88 +113,6 @@
             </div>
         </section>
 
-<<<<<<< HEAD
-    {{-- SECTION PRODUK --}}
-    @foreach ($categories as $category)
-    @if (strtoupper($category->name) !== 'GIFTS')
-    <section class="py-12">
-        <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
-
-        {{-- GRID PRODUK --}}
-        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            @foreach ($category->flowers->shuffle()->take(3) as $flower)
-            <div class="bg-gray-300 relative rounded overflow-hidden">
-
-                {{-- Tombol tambah ke keranjang --}}
-                <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
-                    <form method="POST" action="{{ route('user.cart.add', $flower->id) }}">
-                        @csrf
-                        <button type="submit" class="bg-white/80 rounded p-1 hover:text-gray-600"
-                            aria-label="Keranjang">
-                            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor"
-                                stroke-width="1.6">
-                                <circle cx="9" cy="20" r="1.5" />
-                                <circle cx="17" cy="20" r="1.5" />
-                                <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-
-                {{-- Gambar produk --}}
-                <div class="h-56 bg-gray-400">
-                    @if ($flower->image)
-                    <img src="{{ $flower->image }}" alt="{{ $flower->name }}"
-                        class="w-full h-full object-cover rounded">
-                    @endif
-                </div>
-
-                {{-- Info produk --}}
-                <div class="bg-gray-700 text-white py-4 px-4">
-                    <p class="font-semibold">{{ $flower->name }}</p>
-                    <p>Rp. {{ number_format($flower->price, 0, ',', '.') }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        {{-- Tombol View All --}}
-        <div class="text-center mt-6">
-            <a href="{{ route('user.flowers.index') }}?category={{ $category->id }}"
-                class="px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">
-                View All
-            </a>
-        </div>
-    </section>
-    @endif
-    @endforeach
-
-
-    <section section id="category-3" class="py-12">
-        <h2 class="text-center text-2xl font-bold mb-8">SPECIAL</h2>
-        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {{-- Bouquet --}}
-            <a href="{{ route('user.bouquets.index') }}"
-                class="block bg-gray-300 rounded overflow-hidden relative hover:scale-105 transition">
-                <div class="h-64 w-full">
-                    <img src="{{ asset('images/special/buket.jpeg') }}" alt="Bouquet"
-                        class="w-full h-full object-cover">
-                </div>
-                <div class="bg-gray-700 text-white py-4 px-4 flex justify-center items-center">
-                    <p class="font-semibold">Bouquet</p>
-                </div>
-            </a>
-
-            {{-- Papan --}}
-            <div class="block bg-gray-300 rounded overflow-hidden relative hover:scale-105 transition">
-                <div class="h-64 w-full">
-                    <img src="{{ asset('images/special/papan.png') }}" alt="Papan" class="w-full h-full object-cover">
-                </div>
-                <div class="bg-gray-700 text-white py-4 px-4 flex justify-center items-center">
-                    <p class="font-semibold">Papan</p>
-                </div>
-=======
         {{-- SECTION PRODUK --}}
         @foreach ($categories->whereIn('name', ['Flower', 'Plant']) as $category)
             <section class="py-12">
@@ -343,7 +196,6 @@
 
 
 
->>>>>>> 58ccb8ce841e99c68921fad7935519768a8f7345
             </div>
         </section>
 
@@ -365,20 +217,6 @@
                             <text x="70" y="36" font-size="32" font-family="Georgia, serif" fill="#86efac"
                                 letter-spacing="2">FLOWS</text>
                         </svg>
-<<<<<<< HEAD
-                        <span>WhatsApp</span>
-                    </a>
-                    {{-- Instagram --}}
-                    <a href="https://instagram.com/flows_id" target="_blank"
-                        class="flex items-center gap-2 hover:text-pink-400">
-                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.6">
-                            <rect x="3" y="3" width="18" height="18" rx="5" />
-                            <circle cx="12" cy="12" r="3.5" />
-                            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
-                        </svg>
-                        <span>Instagram</span>
-                    </a>
-=======
                     </div>
                     <p class="text-gray-400">Toko bunga & tanaman untuk momen spesial Anda 🌸</p>
                 </div>
@@ -408,7 +246,6 @@
                             <span>Instagram</span>
                         </a>
                     </div>
->>>>>>> 58ccb8ce841e99c68921fad7935519768a8f7345
                 </div>
             </div>
 
@@ -417,33 +254,6 @@
         </footer>
 
 
-<<<<<<< HEAD
-    <script>
-        function carousel() {
-            return {
-                slides: [
-                {
-                    image: "{{ asset('images/banner1.png') }}",
-                },
-                {
-                    image: "{{ asset('images/banner2.png') }}",
-                },
-            ],
-                current: 0,
-                init() {
-                    setInterval(() => this.next(), 3000);
-                },
-                next() {
-                    this.current = (this.current + 1) % this.slides.length;
-                },
-                prev() {
-                    this.current = (this.current - 1 + this.slides.length) % this.slides.length;
-                }
-            }
-        }
-    </script>
-</x-app-layout>
-=======
         <script>
             function carousel() {
                 return {
@@ -474,4 +284,3 @@
             }
         </script>
     </x-app-layout>
->>>>>>> 58ccb8ce841e99c68921fad7935519768a8f7345
