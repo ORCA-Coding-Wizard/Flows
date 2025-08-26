@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes moveBackground {
+  from { background-position: 0 0; }
+  to { background-position: 200px -200px; }
+}
+
+.bg-rose {
+  background-image: url('/images/bg-rose.png');
+  background-repeat: repeat;
+  background-position: 0 0;
+  animation: moveBackground 30s linear infinite;
+}
+
+@font-face {
+  font-family: 'Runtime';
+  src: url('/fonts/RuntimeRegular-m2Odx.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ html {
+        scroll-behavior: smooth;
+    }

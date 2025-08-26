@@ -7,8 +7,7 @@
                 {{-- search --}}
                 <div class="relative">
                     <button @click="open = !open" class="p-2 hover:text-gray-600" aria-label="Cari">
-                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor"
-                            stroke-width="1.8">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">
                             <circle cx="11" cy="11" r="7" />
                             <path d="m21 21-3.6-3.6" stroke-linecap="round" />
                         </svg>
@@ -64,9 +63,6 @@
                 <template x-for="(slide, index) in slides" :key="index">
                     <div class="w-full flex-shrink-0 h-full relative">
                         <img :src="slide.image" :alt="slide.title" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-                            <h2 class="text-white text-3xl font-bold" x-text="slide.title"></h2>
-                        </div>
                     </div>
                 </template>
             </div>
@@ -82,7 +78,7 @@
     {{-- CATEGORY NAV (FLOWERS | PLANTS | GIFTS) --}}
     <section class="py-12 bg-white">
         <div class="max-w-5xl mx-auto grid grid-cols-3 gap-8 text-center">
-            <a href="#" class="group flex flex-col items-center gap-2">
+            <a href="#category-1" class="group flex flex-col items-center gap-2">
                 {{-- flower icon --}}
                 <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M12 13c-2 0-3.5-1.6-3.5-3.5S10 6 12 6s3.5 1.6 3.5 3.5S14 13 12 13Z" />
@@ -97,7 +93,7 @@
                 </span>
             </a>
 
-            <a href="#" class="group flex flex-col items-center gap-2">
+            <a href="#category-2" class="group flex flex-col items-center gap-2">
                 {{-- leaf icon --}}
                 <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M20 4c-8 0-12 5-12 11a5 5 0 0 0 10 0c0-2 .5-6 2-11Z" />
@@ -111,7 +107,7 @@
                 </span>
             </a>
 
-            <a href="#" class="group flex flex-col items-center gap-2">
+            <a href="#category-3" class="group flex flex-col items-center gap-2">
                 {{-- gift icon --}}
                 <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M3 9h18v11H3z" />
@@ -129,91 +125,87 @@
 
     {{-- SECTION PRODUK --}}
     @foreach ($categories as $category)
-        @if (strtoupper($category->name) !== 'GIFTS')
-            <section class="py-12">
-                <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
-                <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                    @foreach ($category->flowers->shuffle()->take(3) as $flower)
-                        <div class="bg-gray-300 relative rounded">
-                            {{-- wishlist + cart --}}
-                            <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
-                                <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Suka">
-                                    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor"
-                                        stroke-width="1.6">
-                                        <path
-                                            d="M12 21s-7-4.7-9.5-7.6A5.8 5.8 0 0 1 12 5a5.8 5.8 0 0 1 9.5 8.4C19 16.3 12 21 12 21Z"
-                                            stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                                <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Keranjang">
-                                    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor"
-                                        stroke-width="1.6">
-                                        <circle cx="9" cy="20" r="1.5" />
-                                        <circle cx="17" cy="20" r="1.5" />
-                                        <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            {{-- gambar produk --}}
-                            <div class="h-56 bg-gray-400">
-                                @if ($flower->image)
-                                    <img src="{{ $flower->image }}" alt="{{ $flower->name }}"
-                                        class="w-full h-full object-cover rounded">
-                                @endif
-                            </div>
-
-                            {{-- info produk --}}
-                            <div class="bg-gray-700 text-white py-4 px-4">
-                                <p class="font-semibold">{{ $flower->name }}</p>
-                                <p>Rp. {{ number_format($flower->price, 0, ',', '.') }}</p>
-                            </div>
-                        </div>
-                    @endforeach
+    @if (strtoupper($category->name) !== 'GIFTS')
+    <section section id="category-{{ $category->id }}" class="py-12">
+        <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
+        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            @foreach ($category->flowers->shuffle()->take(3) as $flower)
+            <div class="bg-gray-300 relative rounded">
+                {{-- wishlist + cart --}}
+                <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
+                    <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Suka">
+                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <path
+                                d="M12 21s-7-4.7-9.5-7.6A5.8 5.8 0 0 1 12 5a5.8 5.8 0 0 1 9.5 8.4C19 16.3 12 21 12 21Z"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Keranjang">
+                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <circle cx="9" cy="20" r="1.5" />
+                            <circle cx="17" cy="20" r="1.5" />
+                            <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
                 </div>
-                <div class="text-center mt-6">
-                    <a href="{{ route('user.flowers.index') }}?category={{ $category->id }}"
-    class="px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">
-    View All
-</a>
+
+                {{-- gambar produk --}}
+                <div class="h-56 bg-gray-400">
+                    @if ($flower->image)
+                    <img src="{{ $flower->image }}" alt="{{ $flower->name }}"
+                        class="w-full h-full object-cover rounded">
+                    @endif
                 </div>
-            </section>
-        @endif
+
+                {{-- info produk --}}
+                <div class="bg-gray-700 text-white py-4 px-4">
+                    <p class="font-semibold">{{ $flower->name }}</p>
+                    <p>Rp. {{ number_format($flower->price, 0, ',', '.') }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        <div class="text-center mt-6">
+            <a href="{{ route('user.flowers.index') }}?category={{ $category->id }}"
+                class="px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">
+                View All
+            </a>
+        </div>
+    </section>
+    @endif
     @endforeach
 
-    <section class="py-12">
+    <section section id="category-3" class="py-12">
         <h2 class="text-center text-2xl font-bold mb-8">SPECIAL</h2>
         <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             @foreach (['Bouquet', 'Papan'] as $gift)
-                <div class="bg-gray-300 relative rounded">
-                    {{-- wishlist + cart --}}
-                    <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
-                        <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Suka">
-                            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor"
-                                stroke-width="1.6">
-                                <path
-                                    d="M12 21s-7-4.7-9.5-7.6A5.8 5.8 0 0 1 12 5a5.8 5.8 0 0 1 9.5 8.4C19 16.3 12 21 12 21Z"
-                                    stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Keranjang">
-                            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor"
-                                stroke-width="1.6">
-                                <circle cx="9" cy="20" r="1.5" />
-                                <circle cx="17" cy="20" r="1.5" />
-                                <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    {{-- info produk --}}
-                    <div class="bg-gray-700 text-white py-4 px-4">
-                        <p class="font-semibold">{{ $gift }}</p>
-                        <p>Rp. x.xxx.xxx</p>
-                    </div>
+            <div class="bg-gray-300 relative rounded">
+                {{-- wishlist + cart --}}
+                <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
+                    <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Suka">
+                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <path
+                                d="M12 21s-7-4.7-9.5-7.6A5.8 5.8 0 0 1 12 5a5.8 5.8 0 0 1 9.5 8.4C19 16.3 12 21 12 21Z"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Keranjang">
+                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <circle cx="9" cy="20" r="1.5" />
+                            <circle cx="17" cy="20" r="1.5" />
+                            <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
                 </div>
+
+                {{-- info produk --}}
+                <div class="bg-gray-700 text-white py-4 px-4">
+                    <p class="font-semibold">{{ $gift }}</p>
+                    <p>Rp. x.xxx.xxx</p>
+                </div>
+            </div>
             @endforeach
         </div>
     </section>
@@ -255,8 +247,7 @@
                     {{-- Instagram --}}
                     <a href="https://instagram.com/flows_id" target="_blank"
                         class="flex items-center gap-2 hover:text-pink-400">
-                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor"
-                            stroke-width="1.6">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.6">
                             <rect x="3" y="3" width="18" height="18" rx="5" />
                             <circle cx="12" cy="12" r="3.5" />
                             <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
@@ -274,22 +265,17 @@
     <script>
         function carousel() {
             return {
-                slides: [{
-                        image: 'https://images.unsplash.com/photo-1613052271194-5427710fb39d?q=80&w=2024&auto=format&fit=crop',
-                        title: 'Bunga Segar untuk Anda'
-                    },
-                    {
-                        image: 'https://images.unsplash.com/photo-1692131781426-8c6873b71432?q=80&w=2100&auto=format&fit=crop',
-                        title: 'Tanaman Hias Cantik'
-                    },
-                    {
-                        image: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?q=80&w=1160&auto=format&fit=crop',
-                        title: 'Bouquet Custom'
-                    },
-                ],
+                slides: [
+                {
+                    image: "{{ asset('images/banner1.png') }}",
+                },
+                {
+                    image: "{{ asset('images/banner2.png') }}",
+                },
+            ],
                 current: 0,
                 init() {
-                    setInterval(() => this.next(), 5000);
+                    setInterval(() => this.next(), 3000);
                 },
                 next() {
                     this.current = (this.current + 1) % this.slides.length;
