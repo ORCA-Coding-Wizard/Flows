@@ -18,14 +18,11 @@
                             <td class="p-3">Rp. {{ number_format($cart->flower->price, 0, ',', '.') }}</td>
                             <td class="p-3 flex gap-2">
 
-                                {{-- Beli satu item --}}
-                                <form method="POST" action="{{ route('user.transaksi.buyFromCart', $cart->id) }}">
-                                    @csrf
-                                    <button type="submit"
-                                        class="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded transition">
-                                        Beli
-                                    </button>
-                                </form>
+                                {{-- Beli satu item → addToSessionCart --}}
+                                <a href="{{ route('user.addToSessionCart', $cart->id) }}"
+                                    class="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded transition">
+                                    Beli
+                                </a>
 
                                 {{-- Hapus item --}}
                                 <div x-data="{ open: false }">
@@ -41,11 +38,13 @@
                                         <div class="bg-white rounded shadow-lg p-6 z-50 max-w-sm w-full">
                                             <h2 class="text-lg font-semibold mb-4">Konfirmasi Hapus</h2>
                                             <p class="mb-6">Apakah Anda yakin ingin menghapus
-                                                <strong>{{ $cart->flower->name }}</strong> dari keranjang?</p>
+                                                <strong>{{ $cart->flower->name }}</strong> dari keranjang?
+                                            </p>
                                             <div class="flex justify-end gap-3">
                                                 <button @click="open = false"
                                                     class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Batal</button>
-                                                <form method="POST" action="{{ route('user.cart.remove', $cart->id) }}">
+                                                <form method="POST"
+                                                    action="{{ route('user.cart.remove', $cart->id) }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
@@ -64,13 +63,11 @@
         </div>
 
         @if ($carts->count() > 0)
-            {{-- Beli semua item --}}
-            <form method="POST" action="{{ route('user.transaksi.buyAllFromCart') }}" class="mt-6 text-right">
-                @csrf
-                <button type="submit" class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded transition">
-                    Beli Semua
-                </button>
-            </form>
+            {{-- Beli semua item → addAllCartToSession --}}
+            <a href="{{ route('user.addAllCartToSession') }}"
+                class="mt-6 inline-block text-right px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded transition">
+                Beli Semua
+            </a>
         @endif
 
         @if ($carts->isEmpty())

@@ -104,6 +104,12 @@
                 </form>
             </div>
         </div>
+
+        {{-- Form tersembunyi untuk POST buyNow --}}
+        <form id="buyForm" method="POST" style="display:none;">
+            @csrf
+        </form>
+
     </div>
 
     <script>
@@ -185,10 +191,21 @@
                             },
                             body: JSON.stringify(this.form)
                         })
-                        .then(res => res.json())
+                        .then(res => res.json().then(data => ({
+                            status: res.status,
+                            body: data
+                        })))
                         .then(res => {
-                            alert(res.message);
+                            if (res.status !== 200) {
+                                alert(res.body.message || 'Terjadi kesalahan!');
+                                return;
+                            }
+                            alert(res.body.message);
                             location.reload();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Terjadi kesalahan saat menghubungi server!');
                         });
                 },
 
@@ -210,7 +227,7 @@
                     const pkg = this.packages.find(p => p.id === pkgId);
                     if (!pkg) return alert('Bouquet tidak ditemukan!');
 
-                    fetch(`/user/bouquets/buy/${pkgId}`, {
+                    fetch(`/user/bouquets/add-session/${pkgId}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -223,14 +240,17 @@
                         .then(res => res.json())
                         .then(data => {
                             if (data.success) {
-                                alert('Bouquet berhasil ditambahkan ke transaksi.');
-                                window.location.href = `/user/transaksi/${data.transaction_id}`;
+                                // redirect sesuai URL dari server
+                                window.location.href = data.redirect;
                             } else {
                                 alert(data.message || 'Gagal menambahkan ke transaksi.');
                             }
                         })
                         .catch(err => console.error(err));
                 }
+
+
+
             }
         }
     </script>

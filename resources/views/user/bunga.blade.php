@@ -72,16 +72,16 @@
 
                         {{-- actions --}}
                         <div class="mt-3">
-                            {{-- beli langsung --}}
-                            <form action="{{ route('user.flowers.buy', $flower) }}" method="POST">
+                            {{-- beli langsung ke session --}}
+                            <form action="{{ route('user.flowers.addSession', $flower) }}" method="POST">
                                 @csrf
                                 <button type="submit"
                                     class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">
                                     Beli Sekarang
                                 </button>
                             </form>
-
                         </div>
+
                     </div>
                 @empty
                     <p class="text-gray-500">Tidak ada bunga ditemukan.</p>

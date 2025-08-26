@@ -14,22 +14,25 @@ class FlowerController extends Controller
     public function index(Request $request)
     {
         $query = Flower::query();
-
-        // search
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // filter kategori
         if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
 
+        $query->whereHas('category', function ($q) {
+            $q->where('name', '!=', 'Special');
+        });
+
         $flowers = $query->latest()->get();
-        $categories = Category::all();
+
+        $categories = Category::where('name', '!=', 'Special')->get();
 
         return view('user.bunga', compact('flowers', 'categories'));
     }
+
 
     // tambah bunga ke cart
     public function addToCart(Flower $flower)

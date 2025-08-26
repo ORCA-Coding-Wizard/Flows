@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('bouquet_package_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('flower_id')->nullable()->constrained()->cascadeOnDelete();
             $table->integer('quantity')->default(1);
-            $table->integer('price'); // harga per item
+            $table->integer('price');
             $table->timestamps();
         });
     }

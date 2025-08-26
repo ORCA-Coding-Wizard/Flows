@@ -6,223 +6,239 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Flower;
 use App\Models\BouquetPackage;
+use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    /**
-     * Daftar transaksi user (pending & completed)
-     */
-    public function index()
-    {
-        $user = auth()->user();
-        $transactions = Transaction::where('users_id', $user->id)
-            ->with('transactionDetails.flower', 'transactionDetails.bouquetPackage.bouquet')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('user.transaksi', compact('transactions'));
-    }
 
     public function cancel(Transaction $transaction)
     {
-        $user = auth()->user();
-
-        if ($transaction->users_id !== $user->id) {
-            abort(403);
+        // Hanya batalkan jika status masih pending
+        if ($transaction->status != 'pending') {
+            return redirect()->back()->with('error', 'Transaksi tidak bisa dibatalkan.');
         }
 
-        if ($transaction->status !== 'pending') {
-            return redirect()->back()->with('error', 'Hanya transaksi pending yang bisa dibatalkan.');
-        }
-
-        $transaction->status = 'cancelled';
-        $transaction->save();
+        $transaction->update(['status' => 'canceled']);
 
         return redirect()->back()->with('success', 'Transaksi berhasil dibatalkan.');
     }
 
 
-    /**
-     * Detail transaksi
-     */
-    public function show(Transaction $transaction)
+    // Tambah bunga ke session
+    public function addToSessionFlower(Flower $flower)
     {
-        $user = auth()->user();
-        if ($transaction->users_id !== $user->id) abort(403);
+        session()->forget('transaction_items');
+        $items = session()->get('transaction_items', []);
 
-        $transaction->load('transactionDetails.flower', 'transactionDetails.bouquetPackage.bouquet');
+        $items[] = [
+            'type' => 'flower',
+            'id' => $flower->id,
+            'name' => $flower->name,
+            'quantity' => 1,
+            'price' => $flower->price,
+            'subtotal' => $flower->price,
+            'image' => $flower->image,
+            'extra' => null
+        ];
 
-        return view('user.transaction', compact('transaction'));
+        session(['transaction_items' => $items]);
+
+        return redirect()->route('user.transaction.showSession');
     }
 
-    /**
-     * Checkout transaksi
-     * Hanya hapus cart yang item-nya masuk ke transaksi ini
-     */
-    public function checkout(Transaction $transaction)
+    // Tambah bouquet ke session
+    public function addToSessionBouquet(Request $request, $packageId)
     {
-        $user = auth()->user();
-        if ($transaction->users_id !== $user->id) abort(403);
+        session()->forget('transaction_items');
+        $package = BouquetPackage::findOrFail($packageId);
+        $items = session()->get('transaction_items', []);
 
-        if ($transaction->transactionDetails->count() == 0) {
-            return redirect()->back()->with('error', 'Tidak ada item untuk dibayar.');
+        $items[] = [
+            'type' => 'bouquet',
+            'id' => $package->id,
+            'name' => $package->name,
+            'quantity' => 1,
+            'price' => $package->price,
+            'subtotal' => $package->price,
+            'image' => $package->bouquet->image,
+            'extra' => null
+        ];
+
+        session(['transaction_items' => $items]);
+
+        return response()->json([
+            'success' => true,
+            'redirect' => route('user.transaction.showSession') // berikan URL untuk redirect di JS
+        ]);
+    }
+
+    // Tambah papan ke session
+    public function addToSessionPapan()
+    {
+        session()->forget('transaction_items');
+        $specialCategory = Category::where('name', 'Special')->firstOrFail();
+        $flowerPapan = Flower::where('category_id', $specialCategory->id)->firstOrFail();
+
+        $items = session()->get('transaction_items', []);
+
+        $items[] = [
+            'type' => 'papan',
+            'id' => $flowerPapan->id,
+            'name' => $flowerPapan->name,
+            'quantity' => 1,
+            'price' => $flowerPapan->price,
+            'subtotal' => $flowerPapan->price,
+            'image' => asset('images/special/papan.png'),
+            'extra' => [
+                'keterangan' => 'Congratulation',
+                'tujuan' => ''
+            ]
+        ];
+
+        session(['transaction_items' => $items]);
+
+        return redirect()->route('user.transaction.showSession');
+    }
+
+    public function addToSessionCart($cartId)
+    {
+        session()->forget('transaction_items');
+        $cart = Cart::with('flower')->findOrFail($cartId);
+        $items = session()->get('transaction_items', []);
+
+        $items[] = [
+            'type' => 'flower',
+            'id' => $cart->flower->id,
+            'name' => $cart->flower->name,
+            'quantity' => 1,
+            'price' => $cart->flower->price,
+            'subtotal' => $cart->flower->price,
+            'image' => $cart->flower->image,
+            'extra' => null,
+            'cart_id' => $cart->id, // untuk hapus cart setelah checkout
+        ];
+
+        session(['transaction_items' => $items]);
+
+        return redirect()->route('user.transaction.showSession');
+    }
+
+    // Tambah semua cart ke session
+    public function addAllCartToSession()
+    {
+        session()->forget('transaction_items');
+        $carts = Cart::with('flower')->where('user_id', auth()->id())->get();
+        if ($carts->isEmpty()) {
+            return redirect()->back()->with('error', 'Keranjang kosong.');
         }
 
-        $transaction->status = 'pending';
-        $transaction->save();
+        $items = session()->get('transaction_items', []);
 
-        foreach ($transaction->transactionDetails as $detail) {
-            if ($detail->flower_id) {
-                Cart::where('user_id', $user->id)
-                    ->where('flower_id', $detail->flower_id)
-                    ->delete();
+        foreach ($carts as $cart) {
+            $items[] = [
+                'type' => 'flower',
+                'id' => $cart->flower->id,
+                'name' => $cart->flower->name,
+                'quantity' => 1,
+                'price' => $cart->flower->price,
+                'subtotal' => $cart->flower->price,
+                'image' => $cart->flower->image,
+                'extra' => null,
+                'cart_id' => $cart->id,
+            ];
+        }
+
+        session(['transaction_items' => $items]);
+
+        return redirect()->route('user.transaction.showSession');
+    }
+
+
+    // Lihat session transaction
+    public function showSession()
+    {
+        $items = session()->get('transaction_items', []);
+        return view('user.transaction', compact('items'));
+    }
+
+    // Update quantity session item (AJAX)
+    public function updateSessionItem(Request $request, $index)
+    {
+        $items = session()->get('transaction_items', []);
+        if (!isset($items[$index])) abort(404);
+
+        $quantity = max(1, intval($request->quantity));
+        $items[$index]['quantity'] = $quantity;
+        $items[$index]['subtotal'] = $items[$index]['price'] * $quantity;
+
+        session(['transaction_items' => $items]);
+
+        $total = array_sum(array_column($items, 'subtotal'));
+
+        return response()->json([
+            'success' => true,
+            'subtotal' => $items[$index]['subtotal'],
+            'total' => $total
+        ]);
+    }
+
+    // Update papan keterangan dan tujuan (AJAX)
+    public function updatePapanExtra(Request $request, $index)
+    {
+        $items = session()->get('transaction_items', []);
+        if (!isset($items[$index]) || $items[$index]['type'] != 'papan') abort(404);
+
+        $items[$index]['extra'] = [
+            'keterangan' => $request->keterangan,
+            'tujuan' => $request->tujuan
+        ];
+
+        session(['transaction_items' => $items]);
+
+        return response()->json(['success' => true]);
+    }
+
+    // Checkout dari session → buat transaksi DB
+    public function checkoutSession()
+    {
+        $user = auth()->user();
+        $items = session()->get('transaction_items', []);
+        if (empty($items)) return redirect()->back()->with('error', 'Belum ada item untuk dibayar.');
+
+        $papanItem = collect($items)->firstWhere('type', 'papan');
+        $keteranganPapan = $papanItem ? ($papanItem['extra']['keterangan'] . ', Ditujukan ke: ' . $papanItem['extra']['tujuan']) : null;
+
+        $transaction = Transaction::create([
+            'users_id' => $user->id,
+            'status' => 'pending',
+            'total_price' => array_sum(array_column($items, 'subtotal')),
+            'keterangan' => $keteranganPapan,
+        ]);
+
+        foreach ($items as $item) {
+            $transaction->transactionDetails()->create([
+                'flower_id' => $item['type'] === 'flower' || $item['type'] === 'papan' ? $item['id'] : null,
+                'bouquet_package_id' => $item['type'] === 'bouquet' ? $item['id'] : null,
+                'quantity' => $item['quantity'],
+                'price' => $item['subtotal'],
+                'product_type' => $item['type']
+            ]);
+
+            // Hapus cart yang dibeli
+            if (isset($item['cart_id'])) {
+                Cart::find($item['cart_id'])?->delete();
             }
         }
 
-        return redirect()->route('user.transaksi', $transaction)
-            ->with('success', 'Transaksi berhasil dibayar.');
-    }
+        session()->forget('transaction_items');
 
-    public function updateDetail(Request $request, $detailId)
-    {
-        $detail = TransactionDetail::findOrFail($detailId);
-        if ($detail->transaction->users_id !== auth()->id()) abort(403);
-
-        $quantity = max(1, intval($request->quantity));
-        $detail->quantity = $quantity;
-
-        $price = $detail->flower_id ? $detail->flower->price : $detail->bouquetPackage->price;
-        $detail->price = $quantity * $price;
-        $detail->save();
-
-        $transaction = $detail->transaction;
-        $transaction->total_price = $transaction->transactionDetails->sum('price');
-        $transaction->save();
-
-        return response()->json([
-            'success' => true,
-            'subtotal' => $detail->price,
-            'total' => $transaction->total_price
+        $transactions = Transaction::where('users_id', $user->id)->latest()->get();
+        return view('user.transaksi', [
+            'transactions' => $transactions,
+            'success' => 'Transaksi berhasil dibuat!'
         ]);
-    }
-
-    /**
-     * Beli bunga → selalu transaksi baru
-     */
-    public function buyFlower(Flower $flower)
-    {
-        $user = auth()->user();
-
-        $transaction = Transaction::create([
-            'users_id' => $user->id,
-            'status' => 'pending',
-            'total_price' => 0
-        ]);
-
-        $transaction->transactionDetails()->create([
-            'flower_id' => $flower->id,
-            'quantity' => 1,
-            'price' => $flower->price,
-        ]);
-
-        $transaction->total_price = $transaction->transactionDetails->sum('price');
-        $transaction->save();
-
-        return redirect()->route('user.transaksi.show', $transaction)
-            ->with('success', 'Bunga berhasil ditambahkan ke transaksi.');
-    }
-
-    /**
-     * Beli bouquet → selalu transaksi baru
-     */
-    public function buyBouquet($packageId)
-    {
-        $user = auth()->user();
-        $package = BouquetPackage::findOrFail($packageId);
-
-        $transaction = Transaction::create([
-            'users_id' => $user->id,
-            'status' => 'pending',
-            'total_price' => 0
-        ]);
-
-        $transaction->transactionDetails()->create([
-            'bouquet_package_id' => $package->id,
-            'quantity' => 1,
-            'price' => $package->price,
-        ]);
-
-        $transaction->total_price = $transaction->transactionDetails->sum('price');
-        $transaction->save();
-
-        return response()->json([
-            'success' => true,
-            'transaction_id' => $transaction->id
-        ]);
-    }
-
-    /**
-     * Beli satu item dari cart → transaksi baru
-     */
-    public function buyFromCart($cartId)
-    {
-        $user = auth()->user();
-        $cart = Cart::findOrFail($cartId);
-        if ($cart->user_id !== $user->id) abort(403);
-
-        $transaction = Transaction::create([
-            'users_id' => $user->id,
-            'status' => 'pending',
-            'total_price' => 0
-        ]);
-
-        $transaction->transactionDetails()->create([
-            'flower_id' => $cart->flower_id,
-            'quantity' => $cart->quantity ?? 1,
-            'price' => ($cart->quantity ?? 1) * $cart->flower->price,
-        ]);
-
-        $transaction->total_price = $transaction->transactionDetails->sum('price');
-        $transaction->save();
-
-        // jangan hapus cart di sini
-        // $cart->delete();
-
-        return redirect()->route('user.transaksi.show', $transaction)
-            ->with('success', 'Item berhasil ditambahkan ke transaksi.');
-    }
-
-
-    /**
-     * Beli semua item dari cart → transaksi baru
-     */
-    public function buyAllFromCart()
-    {
-        $user = auth()->user();
-        $carts = Cart::where('user_id', $user->id)->get();
-        if ($carts->isEmpty()) return redirect()->back()->with('error', 'Keranjang kosong!');
-
-        $transaction = Transaction::create([
-            'users_id' => $user->id,
-            'status' => 'pending',
-            'total_price' => 0
-        ]);
-
-        foreach ($carts as $cart) {
-            $transaction->transactionDetails()->create([
-                'flower_id' => $cart->flower_id,
-                'quantity' => $cart->quantity ?? 1,
-                'price' => ($cart->quantity ?? 1) * $cart->flower->price,
-            ]);
-        }
-
-        $transaction->total_price = $transaction->transactionDetails->sum('price');
-        $transaction->save();
-
-        return redirect()->route('user.transaksi.show', $transaction)
-            ->with('success', 'Semua item berhasil ditambahkan ke transaksi.');
     }
 }
