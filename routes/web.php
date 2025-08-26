@@ -57,18 +57,27 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:Customer'])->gro
     Route::delete('/bouquets/{package}', [BouquetController::class, 'destroy'])->name('bouquets.destroy');
 
     Route::get('/transaksi', [TransactionController::class, 'index'])->name('transaksi');
-    Route::patch('/user/transaksi/{transaction}/cancel', [\App\Http\Controllers\User\TransactionController::class, 'cancel'])
-    ->name('transaksi.cancel');
+    Route::get('/transaction/session', [TransactionController::class, 'showSession'])
+        ->name('transaction.showSession');
 
-    Route::get('/transaksi/{transaction}', [TransactionController::class, 'show'])->name('transaksi.show');
-    Route::post('/transaksi/detail/{detail}/update', [TransactionController::class, 'updateDetail'])->name('transaksi.detail.update');
-    Route::post('/transaksi/{transaction}/checkout', [TransactionController::class, 'checkout'])->name('transaksi.checkout');
-    Route::post('/flowers/buy/{flower}', [TransactionController::class, 'buyFlower'])->name('flowers.buy');
-    Route::post('/bouquets/buy/{package}', [TransactionController::class, 'buyBouquet'])
-        ->name('bouquets.buy');
+    Route::post('/transaction/session/{index}/update', [TransactionController::class, 'updateSessionItem'])
+        ->name('transaction.session.update');
 
-    Route::post('/transaksi/buy-from-cart/{cart}', [TransactionController::class, 'buyFromCart'])->name('transaksi.buyFromCart');
-    Route::post('/transaksi/buy-all-from-cart', [TransactionController::class, 'buyAllFromCart'])->name('transaksi.buyAllFromCart');
+    Route::post('/transaction/session/{index}/update-papan', [TransactionController::class, 'updatePapanExtra'])
+        ->name('transaction.session.updatePapan');
+
+    Route::post('/transaction/session/checkout', [TransactionController::class, 'checkoutSession'])
+        ->name('transaction.session.checkout');
+
+    // Route untuk add item ke session
+    Route::post('/flowers/add-session/{flower}', [TransactionController::class, 'addToSessionFlower'])->name('flowers.addSession');
+    Route::post('/bouquets/add-session/{package}', [TransactionController::class, 'addToSessionBouquet'])->name('bouquets.addSession');
+    Route::post('/papan/add-session', [TransactionController::class, 'addToSessionPapan'])->name('papan.addSession');
+     Route::get('/add-cart/{cartId}', [TransactionController::class, 'addToSessionCart'])->name('addToSessionCart');
+    Route::get('/add-all-cart', [TransactionController::class, 'addAllCartToSession'])->name('addAllCartToSession');
+
+    Route::post('/transaksi/{transaction}/cancel', [TransactionController::class, 'cancel'])
+        ->name('transaksi.cancel');
 });
 
 

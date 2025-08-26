@@ -103,6 +103,12 @@
                 </form>
             </div>
         </div>
+
+        {{-- Form tersembunyi untuk POST buyNow --}}
+        <form id="buyForm" method="POST" style="display:none;">
+            @csrf
+        </form>
+
     </div>
 
     <script>
@@ -148,10 +154,95 @@
                 this.form.flowers = this.form.flowers.slice(0, this.maxCapacity);
         },
 
+<<<<<<< HEAD
         submitForm() {
             if(!this.form.name || !this.form.bouquet_id || this.form.flowers.length == 0) {
                 alert('Semua field harus diisi!');
                 return;
+=======
+                submitForm() {
+                    if (!this.form.name || !this.form.bouquet_id || this.form.flowers.length == 0) {
+                        alert('Semua field harus diisi!');
+                        return;
+                    }
+
+                    if (this.form.flowers.length > this.maxCapacity) {
+                        alert('Jumlah bunga melebihi kapasitas bouquet!');
+                        return;
+                    }
+
+                    let url = this.form.id ? `/user/bouquets/${this.form.id}` : `/user/bouquets`;
+                    let method = this.form.id ? 'PUT' : 'POST';
+
+                    fetch(url, {
+                            method: method,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify(this.form)
+                        })
+                        .then(res => res.json().then(data => ({
+                            status: res.status,
+                            body: data
+                        })))
+                        .then(res => {
+                            if (res.status !== 200) {
+                                alert(res.body.message || 'Terjadi kesalahan!');
+                                return;
+                            }
+                            alert(res.body.message);
+                            location.reload();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Terjadi kesalahan saat menghubungi server!');
+                        });
+                },
+
+                confirmDelete(id) {
+                    if (confirm('Yakin ingin menghapus bouquet package ini?')) {
+                        fetch(`/user/bouquets/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        }).then(res => res.json()).then(res => {
+                            alert(res.message);
+                            location.reload();
+                        });
+                    }
+                },
+
+                buyNow(pkgId) {
+                    const pkg = this.packages.find(p => p.id === pkgId);
+                    if (!pkg) return alert('Bouquet tidak ditemukan!');
+
+                    fetch(`/user/bouquets/add-session/${pkgId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                quantity: 1
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                // redirect sesuai URL dari server
+                                window.location.href = data.redirect;
+                            } else {
+                                alert(data.message || 'Gagal menambahkan ke transaksi.');
+                            }
+                        })
+                        .catch(err => console.error(err));
+                }
+
+
+
+>>>>>>> 58ccb8ce841e99c68921fad7935519768a8f7345
             }
             if(this.form.flowers.length > this.maxCapacity) {
                 alert('Jumlah bunga melebihi kapasitas!');
