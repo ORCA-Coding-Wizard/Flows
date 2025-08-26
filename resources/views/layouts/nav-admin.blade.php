@@ -60,7 +60,7 @@
                 <span x-show="open" x-transition>{{ __('Kelola Buket') }}</span>
             </a>
 
-            <a href="{{ route('admin.laporan') }}"
+            <a href="{{ route('admin.transactions.index') }}"
                 class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-md {{ request()->routeIs('admin.laporan') ? 'bg-gray-200 font-semibold' : '' }}">
                 <span>📑</span>
                 <span x-show="open" x-transition>{{ __('Laporan') }}</span>

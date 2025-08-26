@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('user.buketmu')" :active="request()->routeIs('user.buketmu')">
+                    <x-nav-link :href="route('user.bouquets.index')" :active="request()->routeIs('user.bouquets.*')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1 inline" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path
@@ -56,14 +56,25 @@
 
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <!-- Bagian kanan navbar -->
+            <div class="flex items-center gap-4 text-gray-800">
+                {{-- Cart --}}
+                <a href="{{ route('user.cart') }}" class="p-2 hover:text-gray-600" aria-label="Keranjang">
+                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="9" cy="20" r="1.5" />
+                        <circle cx="17" cy="20" r="1.5" />
+                        <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </a>
+
+
+                {{-- Dropdown User --}}
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
-
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20">
@@ -83,10 +94,8 @@
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                                onclick="event.preventDefault(); this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>

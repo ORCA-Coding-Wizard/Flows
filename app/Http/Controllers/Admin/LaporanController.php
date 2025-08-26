@@ -10,30 +10,36 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Transaction::with(['user','details.bouquetPackage','details.flower']);
-
-        // Filter tanggal
-        if ($request->filled('start_date')) {
-            $query->whereDate('created_at', '>=', $request->start_date);
-        }
-        if ($request->filled('end_date')) {
-            $query->whereDate('created_at', '<=', $request->end_date);
-        }
-
-        $transactions = $query->latest()->paginate(20);
+        $transactions = Transaction::with([
+            'user',
+            'transactionDetails.flower',
+            'transactionDetails.bouquetPackage.bouquet', // tambahan: base bouquet
+            'transactionDetails.bouquetPackage.flowers' // bunga dalam paket
+        ])->orderBy('created_at', 'desc')
+            ->when($request->status, fn($q) => $q->where('status', $request->status))
+            ->when($request->start_date, fn($q) => $q->whereDate('created_at', '>=', $request->start_date))
+            ->when($request->end_date, fn($q) => $q->whereDate('created_at', '<=', $request->end_date))
+            ->paginate(10);
 
         return view('admin.laporan', compact('transactions'));
     }
 
     public function updateStatus(Request $request, Transaction $transaction)
     {
-        $request->validate([
-            'status' => 'required|in:shipped,completed',
-        ]);
+        $status = $request->status;
 
-        $transaction->update(['status' => $request->status]);
+        $allowedTransitions = [
+            'pending' => 'shipped',
+            'shipped' => 'completed',
+        ];
 
-        return back()->with('success', 'Status transaksi berhasil diperbarui.');
+        if (isset($allowedTransitions[$transaction->status]) && $allowedTransitions[$transaction->status] === $status) {
+            $transaction->status = $status;
+            $transaction->save();
+
+            return redirect()->back()->with('success', "Status transaksi #{$transaction->id} berhasil diubah menjadi {$status}.");
+        }
+
+        return redirect()->back()->with('error', 'Status tidak valid atau tidak bisa diubah.');
     }
 }
-

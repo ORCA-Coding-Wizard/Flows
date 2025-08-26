@@ -1,6 +1,6 @@
 <x-app-layout>
-    {{-- NAVBAR (SEMUA SVG) --}}
     <header class="w-full bg-white shadow">
+<<<<<<< HEAD
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             {{-- kiri: menu + search --}}
             <div class="flex items-center gap-4 text-gray-800" x-data="{ open: false }">
@@ -12,47 +12,46 @@
                             <path d="m21 21-3.6-3.6" stroke-linecap="round" />
                         </svg>
                     </button>
+=======
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            {{-- Kiri: search --}}
+            <div x-data="{ open: false }" class="relative">
+                <button @click="open = !open" class="p-2 hover:text-gray-600" aria-label="Cari">
+                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m21 21-3.6-3.6" stroke-linecap="round" />
+                    </svg>
+                </button>
+>>>>>>> acdda44b0685aafb5a2129b0556736c350cb0101
 
-                    {{-- input muncul saat klik --}}
-                    <form x-show="open" x-transition method="GET" action="{{ route('user.flowers.index') }}"
-                        class="absolute top-full left-0 mt-2 bg-white shadow rounded flex z-50">
-                        <input type="text" name="search" placeholder="Cari bunga..."
-                            class="border px-3 py-2 rounded-l focus:outline-none">
-                        <button type="submit"
-                            class="bg-pink-500 text-white px-4 rounded-r hover:bg-pink-600 transition">Go</button>
-                    </form>
-                </div>
+                {{-- Input muncul saat klik --}}
+                <form x-show="open" x-transition method="GET" action="{{ route('user.flowers.index') }}"
+                    class="absolute top-full left-0 mt-2 bg-white shadow rounded flex z-50">
+                    <input type="text" name="search" placeholder="Cari bunga..."
+                        class="border px-3 py-2 rounded-l focus:outline-none">
+                    <button type="submit"
+                        class="bg-pink-500 text-white px-4 rounded-r hover:bg-pink-600 transition">Go</button>
+                </form>
             </div>
 
-            {{-- logo tengah (SVG) --}}
-            <a href="{{ url('/') }}" class="inline-flex items-center select-none">
+            {{-- Tengah: logo --}}
+            <a href="{{ url('/') }}" class="flex-shrink-0">
                 <svg viewBox="0 0 280 60" class="h-10">
-                    <!-- bunga -->
                     <g transform="translate(20,28) scale(1.1)" fill="none" stroke="#b91c1c" stroke-width="2">
                         <path d="M0-10c6-6 16-6 22 0-4 3-8 7-11 11-3-4-7-8-11-11z" />
                         <path d="M11 1c-2 4-3 8-3 13M11 1c2 4 3 8 3 13" stroke="#14532d" />
                         <circle cx="11" cy="-1" r="4" fill="#b91c1c" stroke="none" />
                     </g>
-                    <!-- teks FLOWS -->
                     <text x="70" y="36" font-size="32" font-family="Georgia, serif" fill="#14532d"
                         letter-spacing="2">FLOWS</text>
                 </svg>
             </a>
 
-            {{-- kanan: wishlist + cart --}}
-            <div class="flex items-center gap-4 text-gray-800">
-                {{-- cart --}}
-                <button class="p-2 hover:text-gray-600" aria-label="Keranjang">
-                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <circle cx="9" cy="20" r="1.5" />
-                        <circle cx="17" cy="20" r="1.5" />
-                        <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </button>
-            </div>
+            {{-- Kanan: kosong, untuk menjaga logo tetap di tengah --}}
+            <div class="w-10"></div>
         </div>
     </header>
+
 
     {{-- HERO BANNER SLIDER --}}
     <section class="w-full h-80 relative overflow-hidden">
@@ -125,6 +124,7 @@
 
     {{-- SECTION PRODUK --}}
     @foreach ($categories as $category)
+<<<<<<< HEAD
     @if (strtoupper($category->name) !== 'GIFTS')
     <section section id="category-{{ $category->id }}" class="py-12">
         <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
@@ -156,6 +156,54 @@
                     <img src="{{ $flower->image }}" alt="{{ $flower->name }}"
                         class="w-full h-full object-cover rounded">
                     @endif
+=======
+        @if (strtoupper($category->name) !== 'GIFTS')
+            <section class="py-12">
+                <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
+                <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                    @foreach ($category->flowers->shuffle()->take(3) as $flower)
+                        <div class="bg-gray-300 relative rounded">
+                            {{-- Hapus wishlist, hanya cart --}}
+                            <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
+                                {{-- Tambah ke Keranjang --}}
+                                <form method="POST" action="{{ route('user.cart.add', $flower->id) }}">
+                                    @csrf
+                                    <button type="submit" class="bg-white/80 rounded p-1 hover:text-gray-600"
+                                        aria-label="Keranjang">
+                                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none"
+                                            stroke="currentColor" stroke-width="1.6">
+                                            <circle cx="9" cy="20" r="1.5" />
+                                            <circle cx="17" cy="20" r="1.5" />
+                                            <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+
+                            {{-- gambar produk --}}
+                            <div class="h-56 bg-gray-400">
+                                @if ($flower->image)
+                                    <img src="{{ $flower->image }}" alt="{{ $flower->name }}"
+                                        class="w-full h-full object-cover rounded">
+                                @endif
+                            </div>
+
+                            {{-- info produk --}}
+                            <div class="bg-gray-700 text-white py-4 px-4">
+                                <p class="font-semibold">{{ $flower->name }}</p>
+                                <p>Rp. {{ number_format($flower->price, 0, ',', '.') }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+
+                </div>
+                <div class="text-center mt-6">
+                    <a href="{{ route('user.flowers.index') }}?category={{ $category->id }}"
+                        class="px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">
+                        View All
+                    </a>
+>>>>>>> acdda44b0685aafb5a2129b0556736c350cb0101
                 </div>
 
                 {{-- info produk --}}
@@ -178,6 +226,7 @@
 
     <section section id="category-3" class="py-12">
         <h2 class="text-center text-2xl font-bold mb-8">SPECIAL</h2>
+<<<<<<< HEAD
         <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             @foreach (['Bouquet', 'Papan'] as $gift)
             <div class="bg-gray-300 relative rounded">
@@ -207,6 +256,31 @@
                 </div>
             </div>
             @endforeach
+=======
+        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {{-- Bouquet --}}
+            <a href="{{ route('user.bouquets.index') }}"
+                class="block bg-gray-300 rounded overflow-hidden relative hover:scale-105 transition">
+                <div class="h-64 w-full">
+                    <img src="{{ asset('images/special/buket.jpeg') }}" alt="Bouquet"
+                        class="w-full h-full object-cover">
+                </div>
+                <div class="bg-gray-700 text-white py-4 px-4 flex justify-center items-center">
+                    <p class="font-semibold">Bouquet</p>
+                </div>
+            </a>
+
+            {{-- Papan --}}
+            <div class="bg-gray-300 rounded overflow-hidden relative">
+                <div class="h-64 w-full">
+                    <img src="{{ asset('images/special/papan.png') }}" alt="Papan"
+                        class="w-full h-full object-cover">
+                </div>
+                <div class="bg-gray-700 text-white py-4 px-4 flex justify-center items-center">
+                    <p class="font-semibold">Papan</p>
+                </div>
+            </div>
+>>>>>>> acdda44b0685aafb5a2129b0556736c350cb0101
         </div>
     </section>
 

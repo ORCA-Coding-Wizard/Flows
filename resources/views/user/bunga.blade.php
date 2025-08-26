@@ -73,13 +73,14 @@
                         {{-- actions --}}
                         <div class="mt-3">
                             {{-- beli langsung --}}
-                            <form action="#" method="POST">
+                            <form action="{{ route('user.flowers.buy', $flower) }}" method="POST">
                                 @csrf
                                 <button type="submit"
                                     class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">
                                     Beli Sekarang
                                 </button>
                             </form>
+
                         </div>
                     </div>
                 @empty
