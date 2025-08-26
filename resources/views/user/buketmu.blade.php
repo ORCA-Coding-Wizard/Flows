@@ -41,8 +41,7 @@
                         <div class="mt-2 grid grid-cols-2 gap-2">
                             <img :src="pkg.bouquet.image" class="h-24 w-full object-cover rounded" alt="Bouquet">
                             <template x-for="flower in pkg.flowers" :key="flower.id">
-                                <img :src="flower.image" class="h-24 w-full object-cover rounded"
-                                    :alt="flower.name">
+                                <img :src="flower.image" class="h-24 w-full object-cover rounded" :alt="flower.name">
                             </template>
                         </div>
                     </div>
@@ -76,23 +75,23 @@
                         </div>
                     </div>
 
+                    {{-- Pilih Bunga --}}
                     <div>
                         <label class="block mb-1">Pilih Bunga</label>
                         <div class="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto border rounded p-2">
                             <template x-for="flower in flowers" :key="flower.id">
                                 <label
                                     class="flex flex-col items-center cursor-pointer border rounded p-1 hover:bg-gray-100">
-                                    <img :src="flower.image" class="h-16 w-16 object-cover rounded"
-                                        :alt="flower.name">
+                                    <img :src="flower.image" class="h-16 w-16 object-cover rounded" :alt="flower.name">
                                     <span class="text-sm mt-1"
                                         x-text="flower.name + ' (Rp. ' + flower.price + ')'"></span>
-                                    <input type="checkbox" :value="flower.id" x-model="form.flowers"
-                                        class="mt-1">
+                                    <input type="checkbox" :value="flower.id" x-model="form.flowers" class="mt-1">
                                 </label>
                             </template>
                         </div>
                         <p class="text-sm text-gray-500 mt-2">Jumlah bunga max: <span x-text="maxCapacity"></span></p>
                     </div>
+
 
                     <div class="flex justify-end gap-2">
                         <button type="button" @click="closeModal()"
@@ -108,130 +107,69 @@
 
     <script>
         function bouquetPackage(bouquets, flowers, packages) {
-            return {
-                showModal: false,
-                modalTitle: '',
-                modalButton: '',
-                maxCapacity: 0,
-                selectedBouquet: null,
-                form: {
-                    id: null,
-                    name: '',
-                    bouquet_id: '',
-                    flowers: []
-                },
-                bouquets,
-                flowers,
-                packages,
+    return {
+        showModal: false,
+        modalTitle: '',
+        modalButton: '',
+        maxCapacity: 0,
+        selectedBouquet: null,
+        form: { id:null, name:'', bouquet_id:'', flowers: [] },
+        bouquets, flowers, packages,
 
-                openCreate() {
-                    this.modalTitle = 'Tambah Bouquet Package';
-                    this.modalButton = 'Simpan';
-                    this.form = {
-                        id: null,
-                        name: '',
-                        bouquet_id: '',
-                        flowers: []
-                    };
-                    this.maxCapacity = 0;
-                    this.selectedBouquet = null;
-                    this.showModal = true;
-                },
+        openCreate() {
+            this.modalTitle = 'Tambah Bouquet Package';
+            this.modalButton = 'Simpan';
+            this.form = { id:null, name:'', bouquet_id:'', flowers: [] };
+            this.selectedBouquet = null;
+            this.maxCapacity = 0;
+            this.showModal = true;
+        },
 
-                openEdit(pkg) {
-                    this.modalTitle = 'Edit Bouquet Package';
-                    this.modalButton = 'Update';
-                    this.form = {
-                        id: pkg.id,
-                        name: pkg.name,
-                        bouquet_id: pkg.bouquet_id,
-                        flowers: pkg.flowers.map(f => f.id)
-                    };
-                    this.selectedBouquet = this.bouquets.find(b => b.id == pkg.bouquet_id);
-                    this.maxCapacity = this.selectedBouquet.capacity;
-                    this.showModal = true;
-                },
+        openEdit(pkg) {
+            this.modalTitle = 'Edit Bouquet Package';
+            this.modalButton = 'Update';
+            this.form = { 
+                id: pkg.id, 
+                name: pkg.name, 
+                bouquet_id: pkg.bouquet_id, 
+                flowers: pkg.flowers.map(f => f.id) 
+            };
+            this.selectedBouquet = this.bouquets.find(b => b.id == pkg.bouquet_id);
+            this.maxCapacity = this.selectedBouquet.capacity;
+            this.showModal = true;
+        },
 
-                closeModal() {
-                    this.showModal = false;
-                },
+        closeModal() { this.showModal = false },
 
-                updateCapacity() {
-                    this.selectedBouquet = this.bouquets.find(b => b.id == this.form.bouquet_id);
-                    this.maxCapacity = this.selectedBouquet ? this.selectedBouquet.capacity : 0;
-                    if (this.form.flowers.length > this.maxCapacity) this.form.flowers = this.form.flowers.slice(0, this
-                        .maxCapacity);
-                },
+        updateCapacity() {
+            this.selectedBouquet = this.bouquets.find(b => b.id == this.form.bouquet_id);
+            this.maxCapacity = this.selectedBouquet ? this.selectedBouquet.capacity : 0;
+            if(this.form.flowers.length > this.maxCapacity) 
+                this.form.flowers = this.form.flowers.slice(0, this.maxCapacity);
+        },
 
-                submitForm() {
-                    if (!this.form.name || !this.form.bouquet_id || this.form.flowers.length == 0) {
-                        alert('Semua field harus diisi!');
-                        return;
-                    }
-
-                    if (this.form.flowers.length > this.maxCapacity) {
-                        alert('Jumlah bunga melebihi kapasitas bouquet!');
-                        return;
-                    }
-
-                    let url = this.form.id ? `/user/bouquets/${this.form.id}` : `/user/bouquets`;
-                    let method = this.form.id ? 'PUT' : 'POST';
-
-                    fetch(url, {
-                            method: method,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify(this.form)
-                        })
-                        .then(res => res.json())
-                        .then(res => {
-                            alert(res.message);
-                            location.reload();
-                        });
-                },
-
-                confirmDelete(id) {
-                    if (confirm('Yakin ingin menghapus bouquet package ini?')) {
-                        fetch(`/user/bouquets/${id}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            }
-                        }).then(res => res.json()).then(res => {
-                            alert(res.message);
-                            location.reload();
-                        });
-                    }
-                },
-
-                buyNow(pkgId) {
-                    const pkg = this.packages.find(p => p.id === pkgId);
-                    if (!pkg) return alert('Bouquet tidak ditemukan!');
-
-                    fetch(`/user/bouquets/buy/${pkgId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                quantity: 1
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert('Bouquet berhasil ditambahkan ke transaksi.');
-                                window.location.href = `/user/transaksi/${data.transaction_id}`;
-                            } else {
-                                alert(data.message || 'Gagal menambahkan ke transaksi.');
-                            }
-                        })
-                        .catch(err => console.error(err));
-                }
+        submitForm() {
+            if(!this.form.name || !this.form.bouquet_id || this.form.flowers.length == 0) {
+                alert('Semua field harus diisi!');
+                return;
             }
+            if(this.form.flowers.length > this.maxCapacity) {
+                alert('Jumlah bunga melebihi kapasitas!');
+                return;
+            }
+
+            let url = this.form.id ? `/user/bouquets/${this.form.id}` : `/user/bouquets`;
+            let method = this.form.id ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method,
+                headers: { 'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}' },
+                body: JSON.stringify(this.form)
+            }).then(res => res.json())
+              .then(res => { alert(res.message); location.reload(); });
         }
+    }
+}
     </script>
+
 </x-app-layout>

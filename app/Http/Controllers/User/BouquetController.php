@@ -12,22 +12,24 @@ use Illuminate\Support\Facades\Auth;
 
 class BouquetController extends Controller
 {
-public function index()
-{
-    $bouquets = Bouquet::all();
+    public function index()
+    {
+        $bouquets = Bouquet::all();
 
-    // Ambil category 'flower'
-    $flowerCategory = Category::where('name', 'Flower')->first();
+        // Pastikan category Flower ada
+        $flowerCategory = Category::firstOrCreate(['name' => 'Flower']);
 
-    // Ambil semua flower dengan category 'flower' saja
-    $flowers = Flower::where('category_id', $flowerCategory->id)->get();
+        // Ambil semua flower dengan category Flower
+        $flowers = Flower::where('category_id', $flowerCategory->id)->get();
 
-    $packages = BouquetPackage::with('bouquet', 'flowers')
-        ->where('user_id', Auth::id())
-        ->get();
 
-    return view('user.buketmu', compact('bouquets', 'flowers', 'packages'));
-}
+        $packages = BouquetPackage::with('bouquet', 'flowers')
+            ->where('user_id', Auth::id())
+            ->get();
+
+        return view('user.buketmu', compact('bouquets', 'flowers', 'packages'));
+    }
+
 
 
     public function store(Request $request)

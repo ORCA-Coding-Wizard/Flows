@@ -110,55 +110,41 @@
 
     {{-- SECTION PRODUK --}}
     @foreach ($categories as $category)
-        @if (strtoupper($category->name) !== 'GIFTS')
-            <section class="py-12">
-                <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
-                <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                    @foreach ($category->flowers->shuffle()->take(3) as $flower)
-                        <div class="bg-gray-300 relative rounded">
-                            {{-- Hapus wishlist, hanya cart --}}
-                            <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
-                                {{-- Tambah ke Keranjang --}}
-                                <form method="POST" action="{{ route('user.cart.add', $flower->id) }}">
-                                    @csrf
-                                    <button type="submit" class="bg-white/80 rounded p-1 hover:text-gray-600"
-                                        aria-label="Keranjang">
-                                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none"
-                                            stroke="currentColor" stroke-width="1.6">
-                                            <circle cx="9" cy="20" r="1.5" />
-                                            <circle cx="17" cy="20" r="1.5" />
-                                            <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
+    @if (strtoupper($category->name) !== 'GIFTS')
+    <section class="py-12">
+        <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
 
-                            {{-- gambar produk --}}
-                            <div class="h-56 bg-gray-400">
-                                @if ($flower->image)
-                                    <img src="{{ $flower->image }}" alt="{{ $flower->name }}"
-                                        class="w-full h-full object-cover rounded">
-                                @endif
-                            </div>
+        {{-- GRID PRODUK --}}
+        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            @foreach ($category->flowers->shuffle()->take(3) as $flower)
+            <div class="bg-gray-300 relative rounded overflow-hidden">
 
-                            {{-- info produk --}}
-                            <div class="bg-gray-700 text-white py-4 px-4">
-                                <p class="font-semibold">{{ $flower->name }}</p>
-                                <p>Rp. {{ number_format($flower->price, 0, ',', '.') }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-
-                </div>
-                <div class="text-center mt-6">
-                    <a href="{{ route('user.flowers.index') }}?category={{ $category->id }}"
-                        class="px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">
-                        View All
-                    </a>
+                {{-- Tombol tambah ke keranjang --}}
+                <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
+                    <form method="POST" action="{{ route('user.cart.add', $flower->id) }}">
+                        @csrf
+                        <button type="submit" class="bg-white/80 rounded p-1 hover:text-gray-600"
+                            aria-label="Keranjang">
+                            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor"
+                                stroke-width="1.6">
+                                <circle cx="9" cy="20" r="1.5" />
+                                <circle cx="17" cy="20" r="1.5" />
+                                <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </form>
                 </div>
 
-                {{-- info produk --}}
+                {{-- Gambar produk --}}
+                <div class="h-56 bg-gray-400">
+                    @if ($flower->image)
+                    <img src="{{ $flower->image }}" alt="{{ $flower->name }}"
+                        class="w-full h-full object-cover rounded">
+                    @endif
+                </div>
+
+                {{-- Info produk --}}
                 <div class="bg-gray-700 text-white py-4 px-4">
                     <p class="font-semibold">{{ $flower->name }}</p>
                     <p>Rp. {{ number_format($flower->price, 0, ',', '.') }}</p>
@@ -166,6 +152,8 @@
             </div>
             @endforeach
         </div>
+
+        {{-- Tombol View All --}}
         <div class="text-center mt-6">
             <a href="{{ route('user.flowers.index') }}?category={{ $category->id }}"
                 class="px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">
@@ -175,6 +163,7 @@
     </section>
     @endif
     @endforeach
+
 
     <section section id="category-3" class="py-12">
         <h2 class="text-center text-2xl font-bold mb-8">SPECIAL</h2>
@@ -192,10 +181,9 @@
             </a>
 
             {{-- Papan --}}
-            <div class="bg-gray-300 rounded overflow-hidden relative">
+            <div class="block bg-gray-300 rounded overflow-hidden relative hover:scale-105 transition">
                 <div class="h-64 w-full">
-                    <img src="{{ asset('images/special/papan.png') }}" alt="Papan"
-                        class="w-full h-full object-cover">
+                    <img src="{{ asset('images/special/papan.png') }}" alt="Papan" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-gray-700 text-white py-4 px-4 flex justify-center items-center">
                     <p class="font-semibold">Papan</p>
