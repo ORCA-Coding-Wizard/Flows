@@ -1,18 +1,5 @@
 <x-app-layout>
     <header class="w-full bg-white shadow">
-<<<<<<< HEAD
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            {{-- kiri: menu + search --}}
-            <div class="flex items-center gap-4 text-gray-800" x-data="{ open: false }">
-                {{-- search --}}
-                <div class="relative">
-                    <button @click="open = !open" class="p-2 hover:text-gray-600" aria-label="Cari">
-                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <circle cx="11" cy="11" r="7" />
-                            <path d="m21 21-3.6-3.6" stroke-linecap="round" />
-                        </svg>
-                    </button>
-=======
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             {{-- Kiri: search --}}
             <div x-data="{ open: false }" class="relative">
@@ -22,7 +9,6 @@
                         <path d="m21 21-3.6-3.6" stroke-linecap="round" />
                     </svg>
                 </button>
->>>>>>> acdda44b0685aafb5a2129b0556736c350cb0101
 
                 {{-- Input muncul saat klik --}}
                 <form x-show="open" x-transition method="GET" action="{{ route('user.flowers.index') }}"
@@ -124,39 +110,6 @@
 
     {{-- SECTION PRODUK --}}
     @foreach ($categories as $category)
-<<<<<<< HEAD
-    @if (strtoupper($category->name) !== 'GIFTS')
-    <section section id="category-{{ $category->id }}" class="py-12">
-        <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
-        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            @foreach ($category->flowers->shuffle()->take(3) as $flower)
-            <div class="bg-gray-300 relative rounded">
-                {{-- wishlist + cart --}}
-                <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
-                    <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Suka">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6">
-                            <path
-                                d="M12 21s-7-4.7-9.5-7.6A5.8 5.8 0 0 1 12 5a5.8 5.8 0 0 1 9.5 8.4C19 16.3 12 21 12 21Z"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Keranjang">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6">
-                            <circle cx="9" cy="20" r="1.5" />
-                            <circle cx="17" cy="20" r="1.5" />
-                            <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-
-                {{-- gambar produk --}}
-                <div class="h-56 bg-gray-400">
-                    @if ($flower->image)
-                    <img src="{{ $flower->image }}" alt="{{ $flower->name }}"
-                        class="w-full h-full object-cover rounded">
-                    @endif
-=======
         @if (strtoupper($category->name) !== 'GIFTS')
             <section class="py-12">
                 <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
@@ -203,7 +156,6 @@
                         class="px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">
                         View All
                     </a>
->>>>>>> acdda44b0685aafb5a2129b0556736c350cb0101
                 </div>
 
                 {{-- info produk --}}
@@ -226,37 +178,6 @@
 
     <section section id="category-3" class="py-12">
         <h2 class="text-center text-2xl font-bold mb-8">SPECIAL</h2>
-<<<<<<< HEAD
-        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            @foreach (['Bouquet', 'Papan'] as $gift)
-            <div class="bg-gray-300 relative rounded">
-                {{-- wishlist + cart --}}
-                <div class="absolute top-2 right-2 flex gap-2 text-gray-800">
-                    <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Suka">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6">
-                            <path
-                                d="M12 21s-7-4.7-9.5-7.6A5.8 5.8 0 0 1 12 5a5.8 5.8 0 0 1 9.5 8.4C19 16.3 12 21 12 21Z"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <button class="bg-white/80 rounded p-1 hover:text-gray-600" aria-label="Keranjang">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6">
-                            <circle cx="9" cy="20" r="1.5" />
-                            <circle cx="17" cy="20" r="1.5" />
-                            <path d="M3 4h2l2.4 10.2A2 2 0 0 0 9.3 16H17a2 2 0 0 0 2-1.6l1.2-6.4H6"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-
-                {{-- info produk --}}
-                <div class="bg-gray-700 text-white py-4 px-4">
-                    <p class="font-semibold">{{ $gift }}</p>
-                    <p>Rp. x.xxx.xxx</p>
-                </div>
-            </div>
-            @endforeach
-=======
         <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
             {{-- Bouquet --}}
             <a href="{{ route('user.bouquets.index') }}"
@@ -280,7 +201,6 @@
                     <p class="font-semibold">Papan</p>
                 </div>
             </div>
->>>>>>> acdda44b0685aafb5a2129b0556736c350cb0101
         </div>
     </section>
 
