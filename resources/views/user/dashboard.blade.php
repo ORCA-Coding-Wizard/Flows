@@ -66,7 +66,7 @@
         {{-- CATEGORY NAV (FLOWERS | PLANTS | GIFTS) --}}
         <section class="py-12 bg-white">
             <div class="max-w-5xl mx-auto grid grid-cols-3 gap-8 text-center">
-                <a href="#" class="group flex flex-col items-center gap-2">
+                <a href="#flower" class="group flex flex-col items-center gap-2">
                     {{-- flower icon --}}
                     <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M12 13c-2 0-3.5-1.6-3.5-3.5S10 6 12 6s3.5 1.6 3.5 3.5S14 13 12 13Z" />
@@ -81,21 +81,8 @@
                     </span>
                 </a>
 
-                <a href="#" class="group flex flex-col items-center gap-2">
-                    {{-- leaf icon --}}
-                    <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M20 4c-8 0-12 5-12 11a5 5 0 0 0 10 0c0-2 .5-6 2-11Z" />
-                        <path d="M8 15c2-1 5-2 8-2" stroke-linecap="round" />
-                    </svg>
-                    <span class="font-bold tracking-wide">PLANTS</span>
-                    <span class="group-hover:translate-x-1 transition">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                </a>
 
-                <a href="#" class="group flex flex-col items-center gap-2">
+                <a href="#special" class="group flex flex-col items-center gap-2">
                     {{-- gift icon --}}
                     <svg viewBox="0 0 24 24" class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M3 9h18v11H3z" />
@@ -115,7 +102,7 @@
 
         {{-- SECTION PRODUK --}}
         @foreach ($categories->whereIn('name', ['Flower', 'Plant']) as $category)
-            <section class="py-12">
+            <section class="py-12" id="flower">
                 <h2 class="text-center text-2xl font-bold mb-8">{{ strtoupper($category->name) }}</h2>
                 <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                     @foreach ($category->flowers->shuffle()->take(3) as $flower)
@@ -165,7 +152,7 @@
         @endforeach
 
 
-        <section class="py-12">
+        <section class="py-12" id="special">
             <h2 class="text-center text-2xl font-bold mb-8">SPECIAL</h2>
             <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
                 {{-- Bouquet --}}
@@ -256,31 +243,26 @@
 
         <script>
             function carousel() {
-                return {
-                    slides: [{
-                            image: 'https://images.unsplash.com/photo-1613052271194-5427710fb39d?q=80&w=2024&auto=format&fit=crop',
-                            title: 'Bunga Segar untuk Anda'
-                        },
-                        {
-                            image: 'https://images.unsplash.com/photo-1692131781426-8c6873b71432?q=80&w=2100&auto=format&fit=crop',
-                            title: 'Tanaman Hias Cantik'
-                        },
-                        {
-                            image: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?q=80&w=1160&auto=format&fit=crop',
-                            title: 'Bouquet Custom'
-                        },
-                    ],
-                    current: 0,
-                    init() {
-                        setInterval(() => this.next(), 5000);
-                    },
-                    next() {
-                        this.current = (this.current + 1) % this.slides.length;
-                    },
-                    prev() {
-                        this.current = (this.current - 1 + this.slides.length) % this.slides.length;
-                    }
+            return {
+                slides: [
+                {
+                    image: "{{ asset('images/banner1.png') }}",
+                },
+                {
+                    image: "{{ asset('images/banner2.png') }}",
+                },
+            ],
+                current: 0,
+                init() {
+                    setInterval(() => this.next(), 3000);
+                },
+                next() {
+                    this.current = (this.current + 1) % this.slides.length;
+                },
+                prev() {
+                    this.current = (this.current - 1 + this.slides.length) % this.slides.length;
                 }
             }
+        }
         </script>
     </x-app-layout>
